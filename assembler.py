@@ -46,7 +46,7 @@ def i_encoding(line,ins):
     elif ins == 'jalr':
         opcode='1100111'
     else:
-        opcode== '0010011'
+        opcode='0010011'
 
     reg=(line[line.index(" ")+1::]).split(',')
     s=''
@@ -75,7 +75,7 @@ def b_encoding(line,ins):
             return 'error'
         else:
             s+=registers_encodings[i]
-        return k[12]+k[10:4:-1]+s+b_type[ins]+k[4:0:-1]+k[11]+"1100011"
+    return k[12]+k[10:4:-1]+s+b_type[ins]+k[4:0:-1]+k[11]+"1100011"
 #U type
 u_type={"lui":"0110111","auipc":"0010111"}
 def u_encoding(line,op):
@@ -125,6 +125,7 @@ fobj=open("name.txt",'r')
 output=open("Output.txt",'w')
 data=fobj.readlines()
 for line in data:
+
     if line!=" ":
         ins=''
         line=line.strip()
@@ -133,6 +134,7 @@ for line in data:
                 ins+=ch
             else:
                 break
+    
         if ins in r_type.keys():
             if r_encoding(line,ins)=='error':
                 print(f'error in line {data.index(line)}')
