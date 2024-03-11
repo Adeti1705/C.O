@@ -124,6 +124,7 @@ def s_encoding(line,ins):
 fobj=open("name.txt",'r')
 output=open("Output.txt",'w')
 data=fobj.readlines()
+lists=['add','sun','sll','slt','sltu','xor','srl','or','and','lw','addi','sltiu','jalr','sw','beq','bne','blt','bge','bltu','bgeu','lui','auipc','jal','']
 for line in data:
 
     if line!=" ":
@@ -134,8 +135,10 @@ for line in data:
                 ins+=ch
             else:
                 break
-    
-        if ins in r_type.keys():
+        if ins not in lists:
+            print('error')
+            break
+        elif ins in r_type.keys():
             if r_encoding(line,ins)=='error':
                 print(f'error in line {data.index(line)}')
                 break
