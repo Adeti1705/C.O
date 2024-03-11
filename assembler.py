@@ -1,4 +1,3 @@
-#same for all
 def convert_binary(n): 
     x= bin(abs(n)).replace("0b", "")
     if len(x)+1>32:
@@ -18,7 +17,7 @@ registers_encodings = {
     's4': '10100', 's5': '10101', 's6': '10110', 's7': '10111', 's8': '11000',
     's9': '11001', 's10': '11010', 's11': '11011', 't3': '11100', 't4': '11101',
     't5': '11110', 't6': '11111'
-} ad
+}
 
 #R type
 r_type = {
@@ -51,6 +50,8 @@ def i_encoding(line,ins):
 
     reg=(line[line.index(" ")+1::]).split(',')
     s=''
+    if convert_binary(int(reg[-1]))=='error':
+        return 'error'
     k=convert_binary(int(reg[-1]))
     reg=reg[0:-1]
     for i in reg:
@@ -64,6 +65,8 @@ b_type = {'beq': '000','bne': '001','blt': '100','bge':'101'}
 def b_encoding(line,ins):
     reg=(line[line.index(" ")+1::]).split(',')
     s=''
+    if convert_binary(int(reg[-1]))=='error':
+        return 'error'
     k=convert_binary(int(reg[-1]))
     k=k[-1::-1]
     reg=reg[0:-1]
@@ -72,12 +75,14 @@ def b_encoding(line,ins):
             return 'error'
         else:
             s+=registers_encodings[i]
-        return k[12]+k[10:5:-1]+s+b_type[ins]+k[4:1:-1]+k[11]+"1100011"
+        return k[12]+k[10:4:-1]+s+b_type[ins]+k[4:0:-1]+k[11]+"1100011"
 #U type
 u_type={"lui":"0110111","auipc":"0010111"}
 def u_encoding(line,op):
     reg=(line[line.index(" ")+1::]).split(',')
     s=''
+    if convert_binary(int(reg[-1]))=='error':
+        return 'error'
     k=convert_binary(int(reg[-1]))
     k=k[-1::-1]
     reg=reg[0:-1]
@@ -86,42 +91,84 @@ def u_encoding(line,op):
             return 'error'
         else:
             s+=registers_encodings[i]
-        return k[31:12:-1]+s+u_type[op]
+        return k[31:11:-1]+s+u_type[op]
 # J type
 def j_encoding(line):
     reg=(line[line.index(" ")+1::]).split(',')
     if reg[0] in registers_encodings.keys():
         x=convert_binary(int(reg[1]))[::-1]
         return x[20]+x[10:0:-1]+x[11]+x[19:11:-1]+registers_encodings[reg[0]]+'1101111'
+    return 'error'
+# S type
+def s_encoding(line,ins):
+    reg=(line[line.index(" ")+1::]).split(',')
+    s=''
+    c=''
+    d=''
+    for i in reg:
+        for j in i:
+            if j.isalpha():
+                c=c+j
+            elif j.isalnum():
+                d=d+j
+        if c not in registers_encodings.keys():
+            return 'error'
+        s+=registers_encodings[c]
+        c=''  
+    if convert_binary(int(reg[-1]))=='error':
+        return 'error'
+    k=convert_binary(int(d))
+    k=k[-1::-1]
+    return k[11:4:-1]+s[:5]+s[5:]+"010"+k[4:0:-1]+"0100011"
 
-
-
-fobj=open("name.txt")
+fobj=open("name.txt",'r')
 output=open("Output.txt",'w')
 data=fobj.readlines()
 for line in data:
     if line!=" ":
         ins=''
+        line=line.strip()
         for ch in line:
             if not ch.isspace():
                 ins+=ch
             else:
                 break
         if ins in r_type.keys():
-            print(r_encoding(line,ins))
+            if r_encoding(line,ins)=='error':
+                print(f'error in line {data.index(line)}')
+                break
+            output.writelines(r_encoding(line,ins)+'\n')
         elif ins in i_type.keys():
-            print(i_encoding(line,ins))
+            if i_encoding(line,ins)=='error':
+                print(f'error in line {data.index(line)}')
+                break
+            output.writelines(i_encoding(line,ins)+'\n')
         elif ins in b_type.keys():
-            print(b_encoding(line,ins))
+            if b_encoding(line,ins)=='error':
+                print(f'error in line {data.index(line)}')
+                break
+            output.writelines(b_encoding(line,ins)+'\n')
         elif ins in u_type.keys():
-            print(u_encoding(line,ins))
+            if u_encoding(line,ins)=='error':
+                print(f'error in line {data.index(line)}')
+                break
+            output.writelines(u_encoding(line,ins)+'\n')
         elif ins=='jal':
-            print(j_encoding(line))
-        elif ins in s_type.keys():
-            print(s_encoding(line,ins))
-        else: 
-            print('error')
+            if j_encoding(line,ins)=='error':
+                print(f'error in line {data.index(line)}')
+                break
+            output.writelines(j_encoding(line)+'\n')
+        elif ins=='sw':
+            if s_encoding(line,ins)=='error':
+                print(f'error in line {data.index(line)}')
+                break
+            output.writelines(s_encoding(line,ins)+'\n')
+        
+        if line =='beq zero,zero,0':
+            break
 
-
+    else: 
+        print(f'error in line {data.index(line)}')
+        break
 #1111111111111111000011101111    
 # 110000000000
