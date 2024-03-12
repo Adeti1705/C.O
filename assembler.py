@@ -46,20 +46,39 @@ def i_encoding(line,ins):
     elif ins == 'jalr':
         opcode='1100111'
     else:
-        opcode='0010011'
+        opcode= '0010011'
 
     reg=(line[line.index(" ")+1::]).split(',')
     s=''
-    if convert_binary(int(reg[-1]))=='error':
-        return 'error'
-    k=convert_binary(int(reg[-1]))
-    reg=reg[0:-1]
-    for i in reg:
-        if i not in registers_encodings.keys():
+    if "(" in reg[1]:
+        num=''
+        for ch in reg[1]:
+            if ch.isdigit():
+                num+=ch
+            else:
+                break
+        print(num)
+        reg[1]=reg[1][reg[1].index("(")+1:-1:]
+
+        if convert_binary(int(num))=='error':
             return 'error'
-        else:
-            s+=registers_encodings[i]
-    return k[20::]+s[5:]+i_type[ins]+s[:5]+opcode
+        k=convert_binary(int(num))
+        for i in reg:
+            if i not in registers_encodings.keys():
+                return 'error'
+            else:
+                s+=registers_encodings[i]
+        return k[20::]+s[5:]+i_type[ins]+s[:5]+opcode
+    else:
+        if convert_binary(int(reg[-1]))=='error':
+            return 'error'
+        k=convert_binary(int(reg[-1]))
+        for i in reg[:-1:]:
+            if i not in registers_encodings.keys():
+                return 'error'
+            else:
+                s+=registers_encodings[i]
+        return k[20::]+s[5:]+i_type[ins]+s[:5]+opcode
 #B type
 b_type = {'beq': '000','bne': '001','blt': '100','bge':'101'}
 def b_encoding(line,ins):
@@ -119,61 +138,62 @@ def s_encoding(line,ins):
         return 'error'
     k=convert_binary(int(d))
     k=k[-1::-1]
-    return k[11:4:-1]+s[:5]+s[5:]+"010"+k[4:0:-1]+"0100011"
 
+    return k[11:4:-1]+s[:5]+s[5:]+"010"+k[4:0:-1]+"0100011"
+lists=['add','sun','sll','slt','sltu','xor','srl','or','and','lw','addi','sltiu','jalr','sw','beq','bne','blt','bge','bltu','bgeu','lui','auipc','jal','qwr']
 fobj=open("name.txt",'r')
 output=open("Output.txt",'w')
 data=fobj.readlines()
-lists=['add','sun','sll','slt','sltu','xor','srl','or','and','lw','addi','sltiu','jalr','sw','beq','bne','blt','bge','bltu','bgeu','lui','auipc','jal','']
-for line in data:
+if 'beq zero,zero,0\n' not in data:
+    print('error virtual hault not there')
+else:
+    for line in data:
+        if line!=" ":
+            ins=''
+            line=line.strip()
+            for ch in line:
+                if not ch.isspace():
+                    ins+=ch
+                else:
+                    break
+            if ins not in lists:
+                print(f'error {line}')
+                break
 
-    if line!=" ":
-        ins=''
-        line=line.strip()
-        for ch in line:
-            if not ch.isspace():
-                ins+=ch
-            else:
+            elif ins in r_type.keys():
+                if r_encoding(line,ins)=='error':
+                    print(f'error in line {line}')
+                    break
+                output.writelines(r_encoding(line,ins)+'\n')
+            elif ins in i_type.keys():
+                if i_encoding(line,ins)=='error':
+                    print(f'error in line {line}')
+                    break
+                output.writelines(i_encoding(line,ins)+'\n')
+            elif ins in b_type.keys():
+                if b_encoding(line,ins)=='error':
+                    print(f'error in line {line}')
+                    break
+                output.writelines(b_encoding(line,ins)+'\n')
+            elif ins in u_type.keys():
+                if u_encoding(line,ins)=='error':
+                    print(f'error in line {line}')
+                    break
+                output.writelines(u_encoding(line,ins)+'\n')
+            elif ins=='jal':
+                if j_encoding(line)=='error':
+                    print(f'error in line {line}')
+                    break
+                output.writelines(j_encoding(line)+'\n')
+            elif ins=='sw':
+                if s_encoding(line,ins)=='error':
+                    print(f'error in line {line}')
+                    break
+                output.writelines(s_encoding(line,ins)+'\n')
+            
+            if line =='beq zero,zero,0':
                 break
-        if ins not in lists:
-            print('error')
-            break
-        elif ins in r_type.keys():
-            if r_encoding(line,ins)=='error':
-                print(f'error in line {data.index(line)}')
-                break
-            output.writelines(r_encoding(line,ins)+'\n')
-        elif ins in i_type.keys():
-            if i_encoding(line,ins)=='error':
-                print(f'error in line {data.index(line)}')
-                break
-            output.writelines(i_encoding(line,ins)+'\n')
-        elif ins in b_type.keys():
-            if b_encoding(line,ins)=='error':
-                print(f'error in line {data.index(line)}')
-                break
-            output.writelines(b_encoding(line,ins)+'\n')
-        elif ins in u_type.keys():
-            if u_encoding(line,ins)=='error':
-                print(f'error in line {data.index(line)}')
-                break
-            output.writelines(u_encoding(line,ins)+'\n')
-        elif ins=='jal':
-            if j_encoding(line,ins)=='error':
-                print(f'error in line {data.index(line)}')
-                break
-            output.writelines(j_encoding(line)+'\n')
-        elif ins=='sw':
-            if s_encoding(line,ins)=='error':
-                print(f'error in line {data.index(line)}')
-                break
-            output.writelines(s_encoding(line,ins)+'\n')
-        
-        if line =='beq zero,zero,0':
-            break
 
-    else: 
-        print(f'error in line {data.index(line)}')
-        break
-#1111111111111111000011101111    
-# 110000000000
+        else: 
+            print(f'error in line {line}')
+            break
