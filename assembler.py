@@ -53,11 +53,10 @@ def i_encoding(line,ins):
     if "(" in reg[1]:
         num=''
         for ch in reg[1]:
-            if ch.isdigit():
+            if ch.isdigit() or ch=='-':
                 num+=ch
             else:
                 break
-        print(num)
         reg[1]=reg[1][reg[1].index("(")+1:-1:]
 
         if convert_binary(int(num))=='error':
@@ -122,29 +121,32 @@ def j_encoding(line):
 def s_encoding(line,ins):
     reg=(line[line.index(" ")+1::]).split(',')
     s=''
-    c=''
-    d=''
-    for i in reg:
-        for j in i:
-            if j.isalpha():
-                c=c+j
-            elif j.isalnum():
-                d=d+j
-        if c not in registers_encodings.keys():
-            return 'error'
-        s+=registers_encodings[c]
-        c=''  
-    if convert_binary(int(reg[-1]))=='error':
-        return 'error'
-    k=convert_binary(int(d))
-    k=k[-1::-1]
+    if "(" in reg[1]:
+        num=''
+        for ch in reg[1]:
+            if ch.isdigit() or ch=='-':
+                num+=ch
+            else:
+                break
+        reg[1]=reg[1][reg[1].index("(")+1:-1:]
 
-    return k[11:4:-1]+s[:5]+s[5:]+"010"+k[4:0:-1]+"0100011"
-lists=['add','sun','sll','slt','sltu','xor','srl','or','and','lw','addi','sltiu','jalr','sw','beq','bne','blt','bge','bltu','bgeu','lui','auipc','jal','qwr']
+        if convert_binary(int(num))=='error':
+            return 'error'
+        k=convert_binary(int(num))
+        for i in reg:
+            if i not in registers_encodings.keys():
+                return 'error'
+            else:
+                s+=registers_encodings[i]
+        return k[11:4:-1]+s[:5]+s[5:]+"010"+k[4::-1]+"0100011"
+    return 'error'
+    
+
+lists=['add','sub','sll','slt','sltu','xor','srl','or','and','lw','addi','sltiu','jalr','sw','beq','bne','blt','bge','bltu','bgeu','lui','auipc','jal','qwr']
 fobj=open("name.txt",'r')
 output=open("Output.txt",'w')
 data=fobj.readlines()
-if 'beq zero,zero,0\n' not in data:
+if 'beq zero,zero,0' not in data:
     print('error virtual hault not there')
 else:
     for line in data:
@@ -197,3 +199,4 @@ else:
         else: 
             print(f'error in line {line}')
             break
+output.close()
