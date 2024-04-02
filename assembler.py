@@ -1,3 +1,13 @@
+import sys
+file_input=sys.argv[1]
+file_output=sys.argv[2]
+# import math
+
+# with open ('C:\\Users\\rayak\\OneDrive\\Documents\\sample1 test.txt', 'r') as file:
+#     lines=[]
+#     for i in file:
+#         lines.append(i.strip())
+
 def convert_binary(n): 
     x= bin(abs(n)).replace("0b", "")
     if len(x)+1>32:
