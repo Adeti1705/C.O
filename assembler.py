@@ -153,6 +153,8 @@ def s_encoding(line,ins):
     
 
 lists=['add','sub','sll','slt','sltu','xor','srl','or','and','lw','addi','sltiu','jalr','sw','beq','bne','blt','bge','bltu','bgeu','lui','auipc','jal','qwr']
+output = sys.stdout
+
 fobj=open("name.txt",'r')
 output=open("Output.txt",'w')
 data=fobj.readlines()
