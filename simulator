@@ -53,4 +53,18 @@ I_opcode = {'0000011':'lw', '0010011':'addi', '0010011':'sltiu', '1100111':'jalr
 
 def R(i):
     # for R type instructions
+   # funct3 = i[17:20]
+    #funct7 = i[:7]
+    #rs2 = dict_registers[i[7:12]]
+    #rs1 = dict_registers[i[12:17]]
+    #rd = dict_registers[i[20:25]]
+     if funct7 == 0100000:
+        sub(rd, rs1, rs2)
+    elif funct3 == 000:
+        add(rd, rs1, rs2)
+    elif funct3 == 001:
+        sll(rd, rs1, rs2) 
+    elif funct3 == 010:
+        slt(rd, rs1, rs2) 
+
 
