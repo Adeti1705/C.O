@@ -125,41 +125,44 @@ def binary_subtraction(a, b):
 
     return result
 
-def slt(ins):
-    if dict_registers[15:20] < dict_registers[20:25]:
-        dict_registers[7:12] = 1
-def sltu(ins):
-    if abs(dict_registers[15:20]) < abs(dict_registers[20:25]):
-        dict_registers[7:12] = 1
-def xor(ins):
-    rs1=
 
-
-
-
-
-def R_type(ins):
+def R_type(ins):  # sourcery skip: for-index-underscore, use-fstring-for-concatenation
     if ins[25:32]=="0100000":
         if dict_registers[15:20]=='00000':
             dict_registers[7:12]=binary_subtraction('0', dict_registers[20:25])
             return
         dict_registers[7:12]=binary_subtraction(dict_registers[15:20], dict_registers[20:25])
         return
-    elif ins[7:12]=="000":
+    elif ins[12:15]=="000":
         dict_registers[7:12]=binary_addition(dict_registers[15:20], dict_registers[20:25])
         return
-    elif ins[7:12]=="010":
-        slt(ins)
-    elif ins[7:12]=="011":
-        sltu(ins)
-    elif ins[7:12]=="100":
-        xor(ins)
-    elif ins[7:12]=="101":
-        srl(ins)
-    elif ins[7:12]=="110":
-        or_op(ins)
-    elif ins[7:12]=="111":
-        and_op(ins)
+    elif ins[12:15]=="001":
+        x=binary_to_decimal('0'+dict_registers[20:25][-5::1])
+        dict_registers[7:12]=dict_registers[15:20][x:]+dict_registers[15:20][:x]
+        return
+    elif ins[12:15]=="010":
+        if binary_to_decimal(dict_registers[15:20]) < binary_to_decimal(dict_registers[20:25]):
+            dict_registers[7:12]=decimal_to_binary(1)
+            return
+    
+    elif ins[12:15]=="011":
+        if abs(binary_to_decimal(dict_registers[15:20])) < abs(binary_to_decimal(dict_registers[20:25])):
+            dict_registers[7:12]=decimal_to_binary(1)
+            return
+    elif ins[12:15]=="100":
+        a=dict_registers[15:20]
+        b=dict_registers[20:25]
+        x=''.join('0' if a[i]==b[i] else '1' for i in range(32))
+        dict_registers[7:12]=x
+        return
+    elif ins[12:15]=="101":
+        pass
+        #right shift will solve later
+    elif ins[12:15]=="110":
+        dict_registers[7:12]=('0' if dict_registers[15:20][i]==dict_registers[20:25][i]=="0" else '1' for i in range(32))
+    elif ins[12:15]=="111":
+        dict_registers[7:12]=('1' if dict_registers[15:20][i]==dict_registers[20:25][i]=='1' else '0' for i in range(32))
+        return
 
 
 
