@@ -124,10 +124,7 @@ def binary_subtraction(a, b):
     result = result[-32:]
 
     return result
-def add(ins):
-    dict_registers[7:12] = convert_binary(dict_registers[15:20] + dict_registers[20:25])
-def sub(ins):
-    dict_registers[7:12] = convert_binary(dict_registers[15:20] - dict_registers[20:25])
+
 def slt(ins):
     if dict_registers[15:20] < dict_registers[20:25]:
         dict_registers[7:12] = 1
@@ -143,9 +140,14 @@ def xor(ins):
 
 def R_type(ins):
     if ins[25:32]=="0100000":
-        sub(ins)
+        if dict_registers[15:20]=='00000':
+            dict_registers[7:12]=binary_subtraction('0', dict_registers[20:25])
+            return
+        dict_registers[7:12]=binary_subtraction(dict_registers[15:20], dict_registers[20:25])
+        return
     elif ins[7:12]=="000":
-        add(ins)
+        dict_registers[7:12]=binary_addition(dict_registers[15:20], dict_registers[20:25])
+        return
     elif ins[7:12]=="010":
         slt(ins)
     elif ins[7:12]=="011":
