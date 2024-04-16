@@ -125,46 +125,47 @@ def binary_subtraction(a, b):
 
     return result
 
-
-def R_type(ins):  # sourcery skip: for-index-underscore, use-fstring-for-concatenation
+def R_type(ins):  # sourcery skip: for-index-underscore, low-code-quality, use-fstring-for-concatenation
     if ins[25:32]=="0100000":
-        if dict_registers[15:20]=='00000':
-            dict_registers[7:12]=binary_subtraction('0', dict_registers[20:25])
+        if ins[15:20]=='00000':
+            dict_registers[ins[7:12]]=binary_subtraction('0', dict_registers[ins[20:25]])
             return
-        dict_registers[7:12]=binary_subtraction(dict_registers[15:20], dict_registers[20:25])
+        dict_registers[ins[7:12]]=binary_subtraction(dict_registers[ins[15:20]], dict_registers[ins[20:25]])
         return
     elif ins[12:15]=="000":
-        dict_registers[7:12]=binary_addition(dict_registers[15:20], dict_registers[20:25])
+        dict_registers[ins[7:12]]=binary_addition(dict_registers[ins[15:20]], dict_registers[ins[20:25]])
         return
     elif ins[12:15]=="001":
         x=binary_to_decimal('0'+dict_registers[20:25][-5::1])
-        dict_registers[7:12]=dict_registers[15:20][x:]+dict_registers[15:20][:x]
+        dict_registers[ins[7:12]]=dict_registers[ins[15:20]][x:]+dict_registers[ins[15:20]][:x]
         return
     elif ins[12:15]=="010":
-        if binary_to_decimal(dict_registers[15:20]) < binary_to_decimal(dict_registers[20:25]):
-            dict_registers[7:12]=decimal_to_binary(1)
+        if binary_to_decimal(dict_registers[ins[15:20]]) < binary_to_decimal(dict_registers[ins[20:25]]):
+            dict_registers[ins[7:12]]=decimal_to_binary(1)
             return
-    
     elif ins[12:15]=="011":
-        if abs(binary_to_decimal(dict_registers[15:20])) < abs(binary_to_decimal(dict_registers[20:25])):
-            dict_registers[7:12]=decimal_to_binary(1)
+        if abs(binary_to_decimal(dict_registers[ins[15:20]])) < abs(binary_to_decimal(dict_registers[ins[20:25]])):
+            dict_registers[ins[7:12]]=decimal_to_binary(1)
             return
     elif ins[12:15]=="100":
-        a=dict_registers[15:20]
-        b=dict_registers[20:25]
+        a=dict_registers[ins[15:20]]
+        b=dict_registers[ins[20:25]]
         x=''.join('0' if a[i]==b[i] else '1' for i in range(32))
-        dict_registers[7:12]=x
+        dict_registers[ins[7:12]]=x
         return
     elif ins[12:15]=="101":
         pass
         #right shift will solve later
     elif ins[12:15]=="110":
-        dict_registers[7:12]=('0' if dict_registers[15:20][i]==dict_registers[20:25][i]=="0" else '1' for i in range(32))
+        dict_registers[ins[7:12]]=('0' if dict_registers[ins[15:20]][i]==dict_registers[ins[20:25]][i]=="0" else '1' for i in range(32))
     elif ins[12:15]=="111":
-        dict_registers[7:12]=('1' if dict_registers[15:20][i]==dict_registers[20:25][i]=='1' else '0' for i in range(32))
+        dict_registers[ins[7:12]]=('1' if dict_registers[ins[15:20]][i]==dict_registers[ins[20:25]][i]=='1' else '0' for i in range(32))
         return
 
-
+#i type
+def I_type(ins):
+    if ins[7:12]=='000':
+        dict_registers[20:25]=binary_addition(ins[20:32], dict_registers[15:20])
 
 #b_type instructions
 def beq(rs1, rs2, imm):
