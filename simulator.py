@@ -197,7 +197,22 @@ def bgeu(rs1, rs2, imm):
     if rs1 >= rs2:
         PC += imm
     return PC
-
+def auipc(instruction_bin, pc):
+    instruction = instruction_bin[31:11:-1]
+    new_pc=pc+int(instruction)
+    return new_pc
+def lui(instruction_bin):
+    instruction = instruction_bin[31:11:-1]
+    return instruction
+def U_type(ins,pc):
+    for i in dict_registers.keys():
+        if ins[11:6:-1]==i:
+            a=i;
+            break
+        if ins[6:-1:-1]=="0010111":
+            dict_registers[a]=auipc(ins, pc)
+        elif ins[6:-1:-1]=="0110111":
+            dict_registers[a]=lui(ins)
 #for aditi, 
 #  the last two, ie bgeu and bltu, rs1 and rs2 have the unsigned value right, and for the others, its the sign extention wala value? i mean that's what i got from the inst pdf lol.
 #also what I did is the literal conversion of the instructions. do tell me about the mistakes tho. i'll do the rest in the morning. def (b) and all
