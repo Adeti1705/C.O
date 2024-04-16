@@ -173,6 +173,50 @@ def I_type(ins):
     if ins[7:12]=='000':
         dict_registers[20:25]=binary_addition(ins[20:32], dict_registers[15:20])
 
+
+def B_type(last_line,PC):
+    if last_line[-7:]=="1100011":
+        func3=last_line[-15:-12]
+        imm =last_line[-12:-7]+last_line[-30:-24]+last_line[-25]+last_line[-1]
+        print("imm",imm)
+        imm1=imm+"0"
+        rs1_0 = last_line[-20 :-15]
+        rs2_0 = last_line[-25 :-20]
+
+
+        for i in register:
+            if rs1_0 == register[i]:
+                temp2=i
+                for reg_name, reg_value in reg_val.items():
+                    if reg_name==temp2:
+                        rs1=format(reg_value, '032b')
+
+        for i in register:
+            if rs2_0 == register[i]:
+                temp3=i
+                for reg_name, reg_value in reg_val.items():
+                    if reg_name==temp3:
+                        rs2=format(reg_value, '032b')
+                        
+        if func3=="000": #beq
+            print("hello ridhi")
+            temp= PC
+            print(PC, 'PC')
+            if bin_to_int(rs1)==bin_to_int(rs2):
+                PC = bin_to_int(PC) + bin_to_int(imm1)
+                print ("imm 1 : ",imm1)
+                PC= int_to_bin(PC)
+                print("pc is  : ",PC)
+            t=' '.join('0b'+format(value,'032b') for value in reg_val.values())
+            # print(t)
+            # values_list = list(reg_val.values()) 
+            # print(values_list)
+            outfile.write(('0b'+PC))
+            outfile.write(" ")
+            outfile.write(t)
+            outfile.write('\n')
+            return PC
+start_index=0
 line = 0
 while(line < len(lines)):
     # print("inside for")
