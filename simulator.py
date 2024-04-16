@@ -1,5 +1,11 @@
 #reg values
 # sourcery skip: remove-duplicate-dict-key
+
+
+f = open("lapt.txt","r")
+lines = f.readlines()
+f.close()
+print(lines)
 reg_values = {
     'zero':'0000000000000000000000000000000', 'ra':'0000000000000000000000000000000', 'sp':'0000000000000000000000000000000',
     'gp':'0000000000000000000000000000000', 'tp':'0000000000000000000000000000000', 't0':'0000000000000000000000000000000',
@@ -167,52 +173,28 @@ def I_type(ins):
     if ins[7:12]=='000':
         dict_registers[20:25]=binary_addition(ins[20:32], dict_registers[15:20])
 
-#b_type instructions
-def beq(rs1, rs2, imm):
-    if rs1 == rs2:
-        PC += imm
-    return PC
-
-def bne(rs1, rs2, imm):
-    if rs1 != rs2:
-        PC += imm
-    return PC
-
-def blt(rs1, rs2, imm):
-    if rs1 >= rs2:
-        PC += imm
-    return PC
-
-def bge(rs1, rs2, imm):
-    if rs1 >= rs2:
-        PC += imm
-    return PC
-
-def bltu(rs1, rs2, imm):
-    if rs1 < rs2:
-        PC += imm
-    return PC
-
-def bgeu(rs1, rs2, imm):
-    if rs1 >= rs2:
-        PC += imm
-    return PC
-def auipc(instruction_bin, pc):
-    instruction = instruction_bin[31:11:-1]
-    new_pc=pc+int(instruction)
-    return new_pc
-def lui(instruction_bin):
-    instruction = instruction_bin[31:11:-1]
-    return instruction
-def U_type(ins,pc):
-    for i in dict_registers.keys():
-        if ins[11:6:-1]==i:
-            a=i;
-            break
-        if ins[6:-1:-1]=="0010111":
-            dict_registers[a]=auipc(ins, pc)
-        elif ins[6:-1:-1]=="0110111":
-            dict_registers[a]=lui(ins)
-#for aditi, 
-#  the last two, ie bgeu and bltu, rs1 and rs2 have the unsigned value right, and for the others, its the sign extention wala value? i mean that's what i got from the inst pdf lol.
-#also what I did is the literal conversion of the instructions. do tell me about the mistakes tho. i'll do the rest in the morning. def (b) and all
+line = 0
+while(line < len(lines)):
+    # print("inside for")
+    l=line*4
+    l = format(l,'032b')
+    # k=k+1ṇ
+    # print('loop', k)
+    # print(line,l)
+    if lines[line][-8:].strip() == "0110011":
+        R_type(lines[line].strip(),l)
+    elif lines[line][-8:].strip() == "1100111":
+        l=(lines[line].strip(), l)
+        line = R_type(line + int(l)//4)-1
+        print(line , "L")
+        print(l, 'a')
+    # elif lines[line][-8:].strip() in ["0000011", "0010011"]:
+    #     I_type(lines[line].strip(),l)
+    # elif lines[line][-8:].strip() == "0100011":
+    #     S_type(lines[line].strip(),l) 
+    # elif lines[line][-8:].strip() == "1100011":
+    #     B_type(lines[line].strip(),l) 
+    # elif lines
+    line = line+1
+# m = '\n'.join('0b{:032}'.format(value) for value in memory.values())
+m = '\n'.join('0b'+format(value, '032b') for value in memory.values())
