@@ -189,6 +189,13 @@ def U_type(ins,pc):
             dict_registers[a]=auipc(ins, pc)
         elif ins[6:-1:-1]=="0110111":
             dict_registers[a]=lui(ins)
+def jal(instruction_bin, pc):
+    imm = binary_to_decimal(instruction_bin[20])*2**20+binary_to_decimal(instruction_bin[1:11])*2**10+binary_to_decimal(instruction_bin[11])*2**11+binary_to_decimal(instruction_bin[12:20])
+    if instruction_bin[20]=='1':
+        imm-=2**21
+    target_address=pc+imm
+    new_pc=pc+4
+    return new_pc, target_address
 def B_type(last_line,PC):
     if last_line[-7:]=="1100011":
         func3=last_line[-15:-12]
