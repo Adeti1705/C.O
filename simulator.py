@@ -1,87 +1,75 @@
 #reg values
 # sourcery skip: remove-duplicate-dict-key
-
-
-f = open("lapt.txt","r")
-lines = f.readlines()
-f.close()
-print(lines)
 reg_values = {
-    'zero':'0000000000000000000000000000000', 'ra':'0000000000000000000000000000000', 'sp':'0000000000000000000000000000000',
-    'gp':'0000000000000000000000000000000', 'tp':'0000000000000000000000000000000', 't0':'0000000000000000000000000000000',
-    't1':'0000000000000000000000000000000', 't2':'0000000000000000000000000000000', 's0':'0000000000000000000000000000000',
-    's1':'0000000000000000000000000000000', 'a0':'0000000000000000000000000000000', 'a1':'0000000000000000000000000000000',
-    'a2':'0000000000000000000000000000000', 'a3':'0000000000000000000000000000000', 'a4':'0000000000000000000000000000000',
-    'a5':'0000000000000000000000000000000', 'a6':'0000000000000000000000000000000', 'a7':'0000000000000000000000000000000',
-    's2':'0000000000000000000000000000000', 's3':'0000000000000000000000000000000', 's4':'0000000000000000000000000000000',
-    's5':'0000000000000000000000000000000', 's6':'0000000000000000000000000000000', 's7':'0000000000000000000000000000000',
-    's8':'0000000000000000000000000000000', 's9':'0000000000000000000000000000000', 's10':'0000000000000000000000000000000',
-    's11':'0000000000000000000000000000000', 't3':'0000000000000000000000000000000', 't4':'0000000000000000000000000000000',
-    't5':'0000000000000000000000000000000', 't6':'0000000000000000000000000000000'
+    'zero':'00000000000000000000000000000000', 'ra':'00000000000000000000000000000000', 'sp':'00000000000000000000000000000000',
+    'gp':'00000000000000000000000000000000', 'tp':'00000000000000000000000000000000', 't0':'00000000000000000000000000000000',
+    't1':'00000000000000000000000000000000', 't2':'00000000000000000000000000000000', 's0':'00000000000000000000000000000000',
+    's1':'00000000000000000000000000000000', 'a0':'00000000000000000000000000000000', 'a1':'00000000000000000000000000000000',
+    'a2':'00000000000000000000000000000000', 'a3':'00000000000000000000000000000000', 'a4':'00000000000000000000000000000000',
+    'a5':'00000000000000000000000000000000', 'a6':'00000000000000000000000000000000', 'a7':'00000000000000000000000000000000',
+    's2':'00000000000000000000000000000000', 's3':'00000000000000000000000000000000', 's4':'00000000000000000000000000000000',
+    's5':'00000000000000000000000000000000', 's6':'00000000000000000000000000000000', 's7':'00000000000000000000000000000000',
+    's8':'00000000000000000000000000000000', 's9':'00000000000000000000000000000000', 's10':'00000000000000000000000000000000',
+    's11':'00000000000000000000000000000000', 't3':'00000000000000000000000000000000', 't4':'00000000000000000000000000000000',
+    't5':'00000000000000000000000000000000', 't6':'00000000000000000000000000000000'
 }
 
 #memory allocation of registers
 memory = {
-    '0x00010000': '0000000000000000000000000000000', '0x00010004': '0000000000000000000000000000000',
-    '0x00010008': '0000000000000000000000000000000', '0x0001000c': '0000000000000000000000000000000', 
-    '0x00010010': '0000000000000000000000000000000', '0x00010014': '0000000000000000000000000000000',
-    '0x00010018': '0000000000000000000000000000000', '0x0001001c': '0000000000000000000000000000000',
-    '0x00010020': '0000000000000000000000000000000', '0x00010024': '0000000000000000000000000000000',
-    '0x00010028': '0000000000000000000000000000000', '0x0001002c': '0000000000000000000000000000000',
-    '0x00010030': '0000000000000000000000000000000', '0x00010034': '0000000000000000000000000000000',
-    '0x00010038': '0000000000000000000000000000000', '0x0001003c': '0000000000000000000000000000000',
-    '0x00010040': '0000000000000000000000000000000', '0x00010044': '0000000000000000000000000000000',
-    '0x00010048': '0000000000000000000000000000000', '0x0001004c': '0000000000000000000000000000000',
-    '0x00010050': '0000000000000000000000000000000', '0x00010054': '0000000000000000000000000000000',
-    '0x00010058': '0000000000000000000000000000000', '0x0001005c': '0000000000000000000000000000000',
-    '0x00010060': '0000000000000000000000000000000', '0x00010064': '0000000000000000000000000000000',
-    '0x00010068': '0000000000000000000000000000000', '0x0001006c': '0000000000000000000000000000000',
-    '0x00010070': '0000000000000000000000000000000', '0x00010074': '0000000000000000000000000000000',
-    '0x00010078': '0000000000000000000000000000000', '0x0001007c': '0000000000000000000000000000000'
+    '0x00010000': '00000000000000000000000000000000', '0x00010004': '00000000000000000000000000000000',
+    '0x00010008': '00000000000000000000000000000000', '0x0001000c': '00000000000000000000000000000000', 
+    '0x00010010': '00000000000000000000000000000000', '0x00010014': '00000000000000000000000000000000',
+    '0x00010018': '00000000000000000000000000000000', '0x0001001c': '00000000000000000000000000000000',
+    '0x00010020': '00000000000000000000000000000000', '0x00010024': '00000000000000000000000000000000',
+    '0x00010028': '00000000000000000000000000000000', '0x0001002c': '00000000000000000000000000000000',
+    '0x00010030': '00000000000000000000000000000000', '0x00010034': '00000000000000000000000000000000',
+    '0x00010038': '00000000000000000000000000000000', '0x0001003c': '00000000000000000000000000000000',
+    '0x00010040': '00000000000000000000000000000000', '0x00010044': '00000000000000000000000000000000',
+    '0x00010048': '00000000000000000000000000000000', '0x0001004c': '00000000000000000000000000000000',
+    '0x00010050': '00000000000000000000000000000000', '0x00010054': '00000000000000000000000000000000',
+    '0x00010058': '00000000000000000000000000000000', '0x0001005c': '00000000000000000000000000000000',
+    '0x00010060': '00000000000000000000000000000000', '0x00010064': '00000000000000000000000000000000',
+    '0x00010068': '00000000000000000000000000000000', '0x0001006c': '00000000000000000000000000000000',
+    '0x00010070': '00000000000000000000000000000000', '0x00010074': '00000000000000000000000000000000',
+    '0x00010078': '00000000000000000000000000000000', '0x0001007c': '00000000000000000000000000000000'
 }
 
 #dictionary for storing reg values
 dict_registers = {
-    '00000': '0000000000000000000000000000000',
-    '00001': '0000000000000000000000000000000',
-    '00010': '0000000000000000000000000000000',
-    '00011': '0000000000000000000000000000000',
-    '00100': '0000000000000000000000000000000',
-    '00101': '0000000000000000000000000000000',
-    '00110': '0000000000000000000000000000000',
-    '00111': '0000000000000000000000000000000',
-    '01000': '0000000000000000000000000000000',
-    '01001': '0000000000000000000000000000000',
-    '01010': '0000000000000000000000000000000',
-    '01011': '0000000000000000000000000000000',
-    '01100': '0000000000000000000000000000000',
-    '01101': '0000000000000000000000000000000',
-    '01110': '0000000000000000000000000000000',
-    '01111': '0000000000000000000000000000000',
-    '10000': '0000000000000000000000000000000',
-    '10001': '0000000000000000000000000000000',
-    '10010': '0000000000000000000000000000000',
-    '10011': '0000000000000000000000000000000',
-    '10100': '0000000000000000000000000000000',
-    '10101': '0000000000000000000000000000000',
-    '10110': '0000000000000000000000000000000',
-    '10111': '0000000000000000000000000000000',
-    '11000': '0000000000000000000000000000000',
-    '11001': '0000000000000000000000000000000',
-    '11010': '0000000000000000000000000000000',
-    '11011': '0000000000000000000000000000000',
-    '11100': '0000000000000000000000000000000',
-    '11101': '0000000000000000000000000000000',
-    '11110': '0000000000000000000000000000000',
-    '11111': '0000000000000000000000000000000'
+    '00000': '00000000000000000000000000000000',
+    '00001': '00000000000000000000000000000000',
+    '00010': '00000000000000000000000000000000',
+    '00011': '00000000000000000000000000000000',
+    '00100': '00000000000000000000000000000000',
+    '00101': '00000000000000000000000000000000',
+    '00110': '00000000000000000000000000000000',
+    '00111': '00000000000000000000000000000000',
+    '01000': '00000000000000000000000000000000',
+    '01001': '00000000000000000000000000000000',
+    '01010': '00000000000000000000000000000000',
+    '01011': '00000000000000000000000000000000',
+    '01100': '00000000000000000000000000000000',
+    '01101': '00000000000000000000000000000000',
+    '01110': '00000000000000000000000000000000',
+    '01111': '00000000000000000000000000000000',
+    '10000': '00000000000000000000000000000000',
+    '10001': '00000000000000000000000000000000',
+    '10010': '00000000000000000000000000000000',
+    '10011': '00000000000000000000000000000000',
+    '10100': '00000000000000000000000000000000',
+    '10101': '00000000000000000000000000000000',
+    '10110': '00000000000000000000000000000000',
+    '10111': '00000000000000000000000000000000',
+    '11000': '00000000000000000000000000000000',
+    '11001': '00000000000000000000000000000000',
+    '11010': '00000000000000000000000000000000',
+    '11011': '00000000000000000000000000000000',
+    '11100': '00000000000000000000000000000000',
+    '11101': '00000000000000000000000000000000',
+    '11110': '00000000000000000000000000000000',
+    '11111': '00000000000000000000000000000000'
 }
 
-B_opcode = '1100011'
-J_opcode = '1101111'
-R_opcode = '0110011'
-S_opcode = '0100011'
-U_opcode = {'0110111':'lui', '0010111':'auipc'}
-I_opcode = {'0000011':'lw', '0010011':'addi', '0010011':'sltiu', '1100111':'jalr'}
    # sourcery skip: simplify-numeric-comparison
 
 # r type funcs
@@ -130,138 +118,221 @@ def binary_subtraction(a, b):
     result = result[-32:]
 
     return result
-
+def binary_to_decimal_unsigned(binary_string):
+    return int(binary_string, 2)
 def R_type(ins):  # sourcery skip: for-index-underscore, low-code-quality, use-fstring-for-concatenation
-    if ins[25:32]=="0100000":
-        if ins[15:20]=='00000':
-            dict_registers[ins[7:12]]=binary_subtraction('0', dict_registers[ins[20:25]])
+    if ins[-32:-25]=="0100000":
+        if ins[-20:-15]=='00000':
+            dict_registers[ins[-12:-7]]=binary_subtraction('0', dict_registers[ins[-20:-15]])
             return
-        dict_registers[ins[7:12]]=binary_subtraction(dict_registers[ins[15:20]], dict_registers[ins[20:25]])
+        dict_registers[ins[-12:-7]]=binary_subtraction(dict_registers[ins[-20:-15]], dict_registers[ins[-25:-20]])
         return
-    elif ins[12:15]=="000":
-        dict_registers[ins[7:12]]=binary_addition(dict_registers[ins[15:20]], dict_registers[ins[20:25]])
+    elif ins[-15:-12]=="000":
+        dict_registers[ins[-12:-7]]=binary_addition(dict_registers[ins[-20:-15]], dict_registers[ins[-25:-20]])
         return
-    elif ins[12:15]=="001":
-        x=binary_to_decimal('0'+dict_registers[20:25][-5::1])
-        dict_registers[ins[7:12]]=dict_registers[ins[15:20]][x:]+dict_registers[ins[15:20]][:x]
+    #doubt
+    elif ins[-15:-12]=="001":
+        x=binary_to_decimal_unsigned(dict_registers[ins[-25:-20]][-5::])
+        dict_registers[ins[-12:-7]]=decimal_to_binary(binary_to_decimal(dict_registers[ins[-20:-15]])<<x)
         return
-    elif ins[12:15]=="010":
-        if binary_to_decimal(dict_registers[ins[15:20]]) < binary_to_decimal(dict_registers[ins[20:25]]):
-            dict_registers[ins[7:12]]=decimal_to_binary(1)
+    elif ins[-15:-12]=="010":
+        if binary_to_decimal(dict_registers[ins[-20:-15]]) < binary_to_decimal(dict_registers[ins[-25:-20]]):
+            dict_registers[ins[-12:-7]]=decimal_to_binary(1)
             return
-    elif ins[12:15]=="011":
-        if abs(binary_to_decimal(dict_registers[ins[15:20]])) < abs(binary_to_decimal(dict_registers[ins[20:25]])):
-            dict_registers[ins[7:12]]=decimal_to_binary(1)
+    elif ins[-15:-12]=="011":
+        if binary_to_decimal_unsigned(dict_registers[ins[-20:-15]]) < (binary_to_decimal_unsigned(dict_registers[ins[-25:-20]])):
+            dict_registers[ins[-12:-7]]=decimal_to_binary(1)
             return
-    elif ins[12:15]=="100":
-        a=dict_registers[ins[15:20]]
-        b=dict_registers[ins[20:25]]
+    elif ins[-15:-12]=="100":
+        a=dict_registers[ins[-20:-15]]
+        b=dict_registers[ins[-25:-20]]
         x=''.join('0' if a[i]==b[i] else '1' for i in range(32))
-        dict_registers[ins[7:12]]=x
+        dict_registers[ins[-12:-7]]=x
         return
-    elif ins[12:15]=="101":
-        pass
+    elif ins[-15:-12]=="101":
+        x=binary_to_decimal_unsigned(dict_registers[ins[-25:-20]][-5::])
+        dict_registers[ins[-12:-7]]=decimal_to_binary(binary_to_decimal(dict_registers[ins[-20:-15]])>>x)
+
         #right shift will solve later
-    elif ins[12:15]=="110":
-        dict_registers[ins[7:12]]=('0' if dict_registers[ins[15:20]][i]==dict_registers[ins[20:25]][i]=="0" else '1' for i in range(32))
+    elif ins[-15:-12]=="110":
+        dict_registers[ins[-12:-7]]=('0' if dict_registers[ins[-20:-15]][i]==dict_registers[ins[-25:-20]][i]=="0" else '1' for i in range(32))
     elif ins[12:15]=="111":
-        dict_registers[ins[7:12]]=('1' if dict_registers[ins[15:20]][i]==dict_registers[ins[20:25]][i]=='1' else '0' for i in range(32))
+        dict_registers[ins[-12:-7]]=('1' if dict_registers[ins[-20:-15]][i]==dict_registers[ins[-25:-20]][i]=='1' else '0' for i in range(32))
         return
+
+#s type
+def binary_to_hex(binary_string):
+    return hex(int(binary_string, 2))
+def S_type(ins):
+    print('this')
+    print(len(ins[0]*20+ins[-32:-25]+ins[-12:-7]))
+    print(len(dict_registers[ins[-25:-20]]))
+    x=binary_addition(dict_registers[ins[-20:-15]],ins[0]*20+ins[-32:-25]+ins[-12:-7])
+    y=binary_to_hex(x)
+    if len(y)<10:
+        y=y[:2]+'0'*(10-len(y))+y[2:]
+    print(y)
+    if y in memory:
+        print('yes')
+    else:
+        print('no')
+    memory[y]=dict_registers[ins[-25:-20]]
+    print(len(memory[y]))
 
 #i type
-def I_type(ins):
-    if ins[7:12]=='000':
-        dict_registers[20:25]=binary_addition(ins[20:32], dict_registers[15:20])
+def I_type(ins):  # sourcery skip: remove-redundant-if
+    global pc
+    if ins[25:32]=="0000011":
+        if ins[-15:-12]=='010':
+            x=binary_addition(dict_registers[ins[-20:-15]],ins[0]*20+ins[-32:-20])
+            y=binary_to_hex(x)
+            if len(y)<10:
+                y=y[:2]+'0'*(10-len(y))+y[2:]
+            print(y)
+            dict_registers[ins[-12:-7]]=memory[y]
+            pc+=1
+            return
+    elif ins[25:32]=="0010011":
+        if ins[-15:-12]=='000':
+            dict_registers[ins[-12:-7]]=binary_addition(dict_registers[ins[-20:-15]],ins[0]*20+ins[-32:-20])
+            pc+=1
+            return
+    elif ins[25:32]=="0010011":
+# sourcery skip: merge-nested-ifs
+        if ins[-15:-12]=='011':
+           if binary_to_decimal_unsigned(dict_registers[ins[-20:-15]]) < binary_to_decimal_unsigned(ins[-32:-20]):
+            dict_registers[ins[-12:-7]]=decimal_to_binary(1)
+            pc+=1
+            return
 
-def auipc(instruction_bin, pc):
-    instruction = binary_to_decimal(instruction_bin[31:11:-1])
-    new_pc=pc+int(instruction)
-    return new_pc
-def lui(instruction_bin):
-    instruction = binary_to_decimal(instruction_bin[31:11:-1])
-    return instruction
-def U_type(ins,pc):
-    a=0
+    elif ins[25:32]=="1100111":
+        if ins[12:15]=='000':
+            dict_registers[ins[-12:-7]]=decimal_to_binary(pc+1)
+            d = f'{decimal_to_binary(pc)[:31]}0'
+            a=binary_addition(reg_values['t1'],ins[0]*20+ins[-32:-20])
+            pc = f'{a[:31]}0'
+            return
+#u type instructions
+def auipc(instruction_bin):
+    global pc
+    instruction = binary_to_decimal(instruction_bin[31:11:-1])<<12
+    new_pc=pc+(instruction)
+    return decimal_to_binary(new_pc)
+def U_type(ins):
     for i in dict_registers.keys():
         if ins[11:6:-1]==i:
-            a=i;
+            a=i
             break
-        if ins[6:-1:-1]=="0010111":
-            dict_registers[a]=auipc(ins, pc)
-        elif ins[6:-1:-1]=="0110111":
-            dict_registers[a]=lui(ins)
-def jal(instruction_bin, pc):
-    imm = binary_to_decimal(instruction_bin[20])*2**20+binary_to_decimal(instruction_bin[1:11])*2**10+binary_to_decimal(instruction_bin[11])*2**11+binary_to_decimal(instruction_bin[12:20])
-    if instruction_bin[20]=='1':
-        imm-=2**21
-    target_address=pc+imm
-    new_pc=pc+4
-    return new_pc, target_address
-def B_type(last_line,PC):
-    if last_line[-7:]=="1100011":
-        func3=last_line[-15:-12]
-        imm =last_line[-12:-7]+last_line[-30:-24]+last_line[-25]+last_line[-1]
-        print("imm",imm)
-        imm1=imm+"0"
-        rs1_0 = last_line[-20 :-15]
-        rs2_0 = last_line[-25 :-20]
+    if ins[6:-1:-1]=="0010111":
+        dict_registers[a]=auipc(ins)
+    elif ins[6:-1:-1]=="0110111":
+        dict_registers[a]=decimal_to_binary(binary_to_decimal(ins[31:11:-1])<<12)
+    
+        
+#b type
 
+def B_type(ins):
+    global pc
+    rs2 = dict_registers[ins[7:12]]
+    rs1 = dict_registers[ins[12:17]]
+    if ins[-15:-12]=='000':
+        if binary_to_decimal(rs1)==binary_to_decimal(rs2):
+            x=binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")
+            print(x)
+            print(pc+x)
+            if binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")==0:
+                pc+=1
+                return
+            pc+=binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")
+        else:
+            pc+=1
+        return
+    if ins[-15:-12]=='001':
+        if binary_to_decimal(rs1)!= binary_to_decimal(rs2):
+            if binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")==0:
+                pc+=1
+                return
+            pc+=binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")
+        else:
+            pc+=1
+        return
+    if ins[-15:-12]=='100':
+        if binary_to_decimal(rs1)<binary_to_decimal(rs2):
+            if binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")==0:
+                pc+=1
+                return
+            pc+=binary_to_decimal(ins[1:7] + ins[20:24] + "10")
+        else:
+            pc+=1
+        return
+    if ins[-15:-12]=='101':
+        if binary_to_decimal(rs1) >= binary_to_decimal(rs2):
+            if binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")==0:
+                pc+=1
+                return
+            pc+=binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")
+        else:
+            pc+=1
+        return
 
-        for i in register:
-            if rs1_0 == register[i]:
-                temp2=i
-                for reg_name, reg_value in reg_val.items():
-                    if reg_name==temp2:
-                        rs1=format(reg_value, '032b')
+    if ins[-15:-12]=='110':
+        if binary_to_decimal_unsigned(rs1) < binary_to_decimal_unsigned(rs2):
+            if binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")==0:
+                pc+=1
+                return
+            pc+=binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")
+        else:
+            pc+=1
+        return 
 
-        for i in register:
-            if rs2_0 == register[i]:
-                temp3=i
-                for reg_name, reg_value in reg_val.items():
-                    if reg_name==temp3:
-                        rs2=format(reg_value, '032b')
-                        
-        if func3=="000": #beq
-            print("hello ridhi")
-            temp= PC
-            print(PC, 'PC')
-            if bin_to_int(rs1)==bin_to_int(rs2):
-                PC = bin_to_int(PC) + bin_to_int(imm1)
-                print ("imm 1 : ",imm1)
-                PC= int_to_bin(PC)
-                print("pc is  : ",PC)
-            t=' '.join('0b'+format(value,'032b') for value in reg_val.values())
-            # print(t)
-            # values_list = list(reg_val.values()) 
-            # print(values_list)
-            outfile.write(('0b'+PC))
-            outfile.write(" ")
-            outfile.write(t)
-            outfile.write('\n')
-            return PC
-start_index=0
-line = 0
-while(line < len(lines)):
-    # print("inside for")
-    l=line*4
-    l = format(l,'032b')
-    # k=k+1ṇ
-    # print('loop', k)
-    # print(line,l)
-    if lines[line][-8:].strip() == "0110011":
-        R_type(lines[line].strip(),l)
-    elif lines[line][-8:].strip() == "1100111":
-        l=(lines[line].strip(), l)
-        line = R_type(line + int(l)//4)-1
-        print(line , "L")
-        print(l, 'a')
-    # elif lines[line][-8:].strip() in ["0000011", "0010011"]:
-    #     I_type(lines[line].strip(),l)
-    # elif lines[line][-8:].strip() == "0100011":
-    #     S_type(lines[line].strip(),l) 
-    # elif lines[line][-8:].strip() == "1100011":
-    #     B_type(lines[line].strip(),l) 
-    # elif lines
-    line = line+1
-# m = '\n'.join('0b{:032}'.format(value) for value in memory.values())
-m = '\n'.join('0b'+format(value, '032b') for value in memory.values())
+    if ins[-15:-12]=='111':
+        if binary_to_decimal_unsigned(rs1) >= binary_to_decimal_unsigned(rs2):
+            if binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")==0:
+                pc+=1
+                return
+            pc+=binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")
+        else:
+            pc+=1
+        return
+#j type instructions
+def J_type(ins):
+    global pc
+    dict_registers[ins[-12:-7]]=decimal_to_binary(pc+4)
+    y = f'{decimal_to_binary(pc)[:31]}0'
+    x=decimal_to_binary(binary_to_decimal(ins[-32:-12])<<1)
+    pc=binary_to_decimal(binary_addition(x,y))
+    return
+#main function
+with open("input.txt","r") as fobj:
+    lines=fobj.readlines()
+    n=len(lines)
+with open("output.txt","w") as output:
+    pc=1
+    while pc<=n and lines[pc-1]!="00000000000000000000000001100011":
+        output.write(f'0b{decimal_to_binary(pc * 4)} ')
+        line=lines[pc-1].strip()
+        if line[-7::]=='0110011':
+            R_type(line)
+            pc+=1
+        elif line[-7::] in ['0000011','0010011','1100111']:
+            I_type(line)
+        elif line[-7::]=='0100011':
+            S_type(line)
+            pc+=1
+        elif line[-7::]=='1100011':
+            B_type(line)
+        elif line[-7::] in ['0010111','0110111']:
+            U_type(line)
+            pc+=1
+        elif line[-7::]=='1101111':
+            J_type(line)
+        else:
+            pc+=1
+        v=dict_registers.values()
+        for i in v:
+            output.write(f'0b{i} ')
+        output.write('\n')
+    for key, value in memory.items():
+        output.write(f'{key}:0b{value}\n')
+    
+
