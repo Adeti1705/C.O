@@ -173,7 +173,22 @@ def I_type(ins):
     if ins[7:12]=='000':
         dict_registers[20:25]=binary_addition(ins[20:32], dict_registers[15:20])
 
-
+def auipc(instruction_bin, pc):
+    instruction = instruction_bin[31:11:-1]
+    new_pc=pc+int(instruction)
+    return new_pc
+def lui(instruction_bin):
+    instruction = instruction_bin[31:11:-1]
+    return instruction
+def U_type(ins,pc):
+    for i in dict_registers.keys():
+        if ins[11:6:-1]==i:
+            a=i;
+            break
+        if ins[6:-1:-1]=="0010111":
+            dict_registers[a]=auipc(ins, pc)
+        elif ins[6:-1:-1]=="0110111":
+            dict_registers[a]=lui(ins)
 def B_type(last_line,PC):
     if last_line[-7:]=="1100011":
         func3=last_line[-15:-12]
