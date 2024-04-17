@@ -174,13 +174,14 @@ def I_type(ins):
         dict_registers[20:25]=binary_addition(ins[20:32], dict_registers[15:20])
 
 def auipc(instruction_bin, pc):
-    instruction = instruction_bin[31:11:-1]
+    instruction = binary_to_decimal(instruction_bin[31:11:-1])
     new_pc=pc+int(instruction)
     return new_pc
 def lui(instruction_bin):
-    instruction = instruction_bin[31:11:-1]
+    instruction = binary_to_decimal(instruction_bin[31:11:-1])
     return instruction
 def U_type(ins,pc):
+    a=0
     for i in dict_registers.keys():
         if ins[11:6:-1]==i:
             a=i;
