@@ -1,3 +1,6 @@
+import sys
+file_input=sys.argv[1]
+file_output=sys.argv[2]
 #reg values
 # sourcery skip: remove-duplicate-dict-key
 reg_values = {
@@ -38,7 +41,7 @@ memory = {
 dict_registers = {
     '00000': '00000000000000000000000000000000',
     '00001': '00000000000000000000000000000000',
-    '00010': '00000000000000000000000000000000',
+    '00010': '00000000000000000000000100000000',
     '00011': '00000000000000000000000000000000',
     '00100': '00000000000000000000000000000000',
     '00101': '00000000000000000000000000000000',
@@ -155,29 +158,25 @@ def R_type(ins):  # sourcery skip: for-index-underscore, low-code-quality, use-f
 
         #right shift will solve later
     elif ins[-15:-12]=="110":
-        dict_registers[ins[-12:-7]]=('0' if dict_registers[ins[-20:-15]][i]==dict_registers[ins[-25:-20]][i]=="0" else '1' for i in range(32))
-    elif ins[12:15]=="111":
-        dict_registers[ins[-12:-7]]=('1' if dict_registers[ins[-20:-15]][i]==dict_registers[ins[-25:-20]][i]=='1' else '0' for i in range(32))
+        x=binary_to_decimal(dict_registers[ins[-25:-20]])
+        y=binary_to_decimal(dict_registers[ins[-20:-15]])
+        dict_registers[ins[-12:-7]]=decimal_to_binary(x|y)
+    elif ins[-15:-12]=="111":
+        print(dict_registers[ins[-25:-20]],dict_registers[ins[-20:-15]],dict_registers[ins[-25:-20]],sep='  ')
+        x=binary_to_decimal(dict_registers[ins[-25:-20]])
+        y=binary_to_decimal(dict_registers[ins[-20:-15]])
+        dict_registers[ins[-12:-7]]=decimal_to_binary(x&y)
         return
 
 #s type
 def binary_to_hex(binary_string):
     return hex(int(binary_string, 2))
 def S_type(ins):
-    print('this')
-    print(len(ins[0]*20+ins[-32:-25]+ins[-12:-7]))
-    print(len(dict_registers[ins[-25:-20]]))
     x=binary_addition(dict_registers[ins[-20:-15]],ins[0]*20+ins[-32:-25]+ins[-12:-7])
     y=binary_to_hex(x)
     if len(y)<10:
         y=y[:2]+'0'*(10-len(y))+y[2:]
-    print(y)
-    if y in memory:
-        print('yes')
-    else:
-        print('no')
     memory[y]=dict_registers[ins[-25:-20]]
-    print(len(memory[y]))
 
 #i type
 def I_type(ins):  # sourcery skip: remove-redundant-if
@@ -190,11 +189,13 @@ def I_type(ins):  # sourcery skip: remove-redundant-if
                 y=y[:2]+'0'*(10-len(y))+y[2:]
             print(y)
             dict_registers[ins[-12:-7]]=memory[y]
+            prev=pc
             pc+=1
             return
     elif ins[25:32]=="0010011":
         if ins[-15:-12]=='000':
             dict_registers[ins[-12:-7]]=binary_addition(dict_registers[ins[-20:-15]],ins[0]*20+ins[-32:-20])
+            prev=pc
             pc+=1
             return
     elif ins[25:32]=="0010011":
@@ -202,31 +203,34 @@ def I_type(ins):  # sourcery skip: remove-redundant-if
         if ins[-15:-12]=='011':
            if binary_to_decimal_unsigned(dict_registers[ins[-20:-15]]) < binary_to_decimal_unsigned(ins[-32:-20]):
             dict_registers[ins[-12:-7]]=decimal_to_binary(1)
-            pc+=1
-            return
+        prev=pc
+        pc+=1
+        return
 
     elif ins[25:32]=="1100111":
         if ins[12:15]=='000':
             dict_registers[ins[-12:-7]]=decimal_to_binary(pc+1)
             d = f'{decimal_to_binary(pc)[:31]}0'
             a=binary_addition(reg_values['t1'],ins[0]*20+ins[-32:-20])
+            prev=pc
             pc = f'{a[:31]}0'
             return
 #u type instructions
 def auipc(instruction_bin):
-    global pc
-    instruction = binary_to_decimal(instruction_bin[31:11:-1])<<12
-    new_pc=pc+(instruction)
-    return decimal_to_binary(new_pc)
+    # sourcery skip: inline-immediately-returned-variable
+    global pc,prev
+    instruction = binary_to_decimal(instruction_bin[-32:-12])<<12
+    new=binary_addition(decimal_to_binary(prev*4),decimal_to_binary(instruction))
+    return new
 def U_type(ins):
     for i in dict_registers.keys():
-        if ins[11:6:-1]==i:
+        if ins[-12:-7]==i:
             a=i
             break
-    if ins[6:-1:-1]=="0010111":
+    if ins[-7::]=="0010111":
         dict_registers[a]=auipc(ins)
-    elif ins[6:-1:-1]=="0110111":
-        dict_registers[a]=decimal_to_binary(binary_to_decimal(ins[31:11:-1])<<12)
+    elif ins[-7::]=="0110111":
+        dict_registers[a]=decimal_to_binary(binary_to_decimal(ins[-32:-12])<<12)
     
         
 #b type
@@ -241,88 +245,111 @@ def B_type(ins):
             print(x)
             print(pc+x)
             if binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")==0:
+                prev=pc
                 pc+=1
                 return
+            prev=pc
             pc+=binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")
         else:
+            prev=pc
             pc+=1
         return
     if ins[-15:-12]=='001':
         if binary_to_decimal(rs1)!= binary_to_decimal(rs2):
             if binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")==0:
+                prev=pc
                 pc+=1
                 return
+            prev=pc
             pc+=binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")
         else:
+            prev=pc
             pc+=1
         return
     if ins[-15:-12]=='100':
         if binary_to_decimal(rs1)<binary_to_decimal(rs2):
             if binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")==0:
+                prev=pc
                 pc+=1
                 return
+            prev=pc
             pc+=binary_to_decimal(ins[1:7] + ins[20:24] + "10")
         else:
+            prev=pc
             pc+=1
         return
     if ins[-15:-12]=='101':
         if binary_to_decimal(rs1) >= binary_to_decimal(rs2):
             if binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")==0:
+                prev=pc
                 pc+=1
                 return
+            prev=pc
             pc+=binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")
         else:
+            prev=pc
             pc+=1
         return
 
     if ins[-15:-12]=='110':
         if binary_to_decimal_unsigned(rs1) < binary_to_decimal_unsigned(rs2):
             if binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")==0:
+                prev=pc
                 pc+=1
                 return
+            prev=pc
             pc+=binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")
         else:
+            prev=pc
             pc+=1
         return 
 
     if ins[-15:-12]=='111':
         if binary_to_decimal_unsigned(rs1) >= binary_to_decimal_unsigned(rs2):
             if binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")==0:
+                prev=pc
                 pc+=1
                 return
+            prev=pc
             pc+=binary_to_decimal(ins[24] + ins[1:7] + ins[20:24] + "0")
         else:
+            prev=pc
             pc+=1
         return
 #j type instructions
 def J_type(ins):
-    global pc
+    global pc,prev
     dict_registers[ins[-12:-7]]=decimal_to_binary(pc+4)
     y = f'{decimal_to_binary(pc)[:31]}0'
     x=decimal_to_binary(binary_to_decimal(ins[-32:-12])<<1)
+    prev=pc
     pc=binary_to_decimal(binary_addition(x,y))
     return
 #main function
-with open("input.txt","r") as fobj:
+with open(sys.argv[1],"r") as fobj:
     lines=fobj.readlines()
     n=len(lines)
-with open("output.txt","w") as output:
+with open(sys.argv[2],"w") as output:
     pc=1
-    while pc<=n and lines[pc-1]!="00000000000000000000000001100011":
+    prev=1
+    while pc<=n and (lines[pc-1].strip()!="00000000000000000000000001100011"):
         output.write(f'0b{decimal_to_binary(pc * 4)} ')
         line=lines[pc-1].strip()
         if line[-7::]=='0110011':
             R_type(line)
+            prev=pc
             pc+=1
         elif line[-7::] in ['0000011','0010011','1100111']:
             I_type(line)
         elif line[-7::]=='0100011':
             S_type(line)
+            prev=pc
             pc+=1
         elif line[-7::]=='1100011':
             B_type(line)
         elif line[-7::] in ['0010111','0110111']:
             U_type(line)
+            prev=pc
             pc+=1
         elif line[-7::]=='1101111':
             J_type(line)
@@ -332,6 +359,10 @@ with open("output.txt","w") as output:
         for i in v:
             output.write(f'0b{i} ')
         output.write('\n')
+    output.write(f'0b{decimal_to_binary(prev*4)} ')
+    for i in dict_registers.values():
+        output.write(f'0b{i} ')
+    output.write('\n')
     for key, value in memory.items():
         output.write(f'{key}:0b{value}\n')
     
